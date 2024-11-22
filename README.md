@@ -42,6 +42,7 @@ Functional Simulation:
       
 	After this you can see the window like below 
 
+![WhatsApp Image 2024-11-22 at 12 37 48_23c53c58](https://github.com/user-attachments/assets/e834fb20-8b1c-475e-be59-f584929f2bf3)
 
 ## Fig 2: Invoke the Cadence Environment
 
@@ -56,7 +57,22 @@ Functional Simulation:
 
 ### Verilog code for 4-Bit Up-Down Counter:
 
-*/Program  for  4-Bit Up-Down Counter
+               
+                `timescale 1ns / 1 ns
+		module counter(clk,m,rst,count);
+                input clk,m,rst;
+                output reg [3:0] count;
+                always@(posedge clk or negedge rst)
+                begin
+                if (!rst)
+                count=0;
+                else if(m)
+                count=count+1;
+                else
+                count=count-1;
+                end
+                endmodule
+
 
 	Use Save option or Ctrl+S to save the code or click on the save option from the top most right corner and close the text file.
 
@@ -66,7 +82,27 @@ Functional Simulation:
 
 ### Test-bench code for 4-Bit Up-Down Counter:
 
-*/Test bench Program  for  4-Bit Up-Down Counter
+                  `timescale 1ns / 1ns
+		   module counter_test;
+                   reg clk,rst,m;
+		   wire [3:0] count;
+                   initial
+		   begin
+                   clk=0;
+		   rst=0;#5;
+                   rst=1;
+		   end
+                   initial
+		   begin
+                   m=1;
+		   #160 m=0;
+                   end
+		   counter counter1 (clk,m,rst, count);
+                   always #5 clk=~clk;
+		   initial $monitor("Time=%t rst=%b clk=%b count=%b" , $time,rst,clk,count);
+                   initial
+		   #320 $finish;
+                   endmodule
 
 ### To Launch Simulation tool
 	linux:/> nclaunch -new&            // “-new” option is used for invoking NCVERILOG for the first time for any design
@@ -74,12 +110,14 @@ Functional Simulation:
 	linux:/> nclaunch&                 // On subsequent calls to NCVERILOG
 
 It will invoke the nclaunch window for functional simulation we can compile,elaborate and simulate it using Multiple step
+![WhatsApp Image 2024-11-22 at 12 37 48_574b0359](https://github.com/user-attachments/assets/c57acae0-9e91-4858-a0be-6ae16eafd678)
 
 ## Fig 3: Setting Multi-step simulation
 
 Select Multiple Step and then select “Create cds.lib File” as shown in below figure
 
 Click the cds.lib file and save the file by clicking on Save option
+![WhatsApp Image 2024-11-22 at 12 37 48_931ad073](https://github.com/user-attachments/assets/658f5057-2dff-4691-8b20-dfd4158c07a4)
 
 ## Fig 4: cds.lib file Creation
 
@@ -88,6 +126,7 @@ Click the cds.lib file and save the file by clicking on Save option
 	Select “Don’t include any libraries (verilog design)” from “New cds.lib file” and click on “OK” as in below figure
 
 	We are simulating verilog design without using any libraries
+![WhatsApp Image 2024-11-22 at 12 37 48_043fc67c](https://github.com/user-attachments/assets/b57a9bfc-7f9b-4dfb-8d91-8f14d367ed21)
 
 ## Fig 5: Selection of Don’t include any libraries
 
@@ -98,6 +137,7 @@ Click the cds.lib file and save the file by clicking on Save option
 	Left side you can see the HDL files. Right side of the window has worklib and snapshots directories listed.
 
 	Worklib is the directory where all the compiled codes are stored while Snapshot will have output of elaboration which in turn goes for simulation
+![WhatsApp Image 2024-11-22 at 12 37 48_c32f10f0](https://github.com/user-attachments/assets/4bb6610e-1e8b-40c3-9dbb-cf0bb52ed256)
 
 ## Fig 6: Nclaunch Window
 
@@ -122,6 +162,7 @@ i.e Cadence IES command for compile: ncverilog +access+rwc -compile fa.v
 Left side select the file and in Tools : launch verilog compiler with current selection will get enable. Click it to compile the code 
 
 Worklib is the directory where all the compiled codes are stored while Snapshot will have output of elaboration which in turn goes for simulation 
+![WhatsApp Image 2024-11-22 at 12 37 48_c32f10f0](https://github.com/user-attachments/assets/2d8c7d18-6cc3-44ea-a321-606610e11e44)
 
 ## Fig 7: Compiled database in worklib
 
@@ -151,6 +192,7 @@ It contains statements that map logical library names to their physical director
 9.	It also establishes net connectivity and prepares all of this for simulation
     
 	After elaboration the file will come under snapshot. Select the test bench and simulate it. 
+![WhatsApp Image 2024-11-22 at 12 37 48_a035cba1](https://github.com/user-attachments/assets/e94edfbf-915a-454a-87c5-c0b144d38bd5)
 
 ## Fig 8: Elaboration Launch Option
 
@@ -163,14 +205,17 @@ It contains statements that map logical library names to their physical director
 	Simulation allow to dump design and test bench signals into a waveform 
 
 	Steps for simulation – Run the simulation command with simulator options
+![WhatsApp Image 2024-11-22 at 12 37 48_3a1f66bd](https://github.com/user-attachments/assets/3118550f-9a0b-4d67-9bb1-a0d2f8b96e4b)
 
 ## Fig 9: Design Browser window for simulation
+![WhatsApp Image 2024-11-22 at 12 37 48_945e4523](https://github.com/user-attachments/assets/74aa8671-611b-433d-b7bb-a2f063521ffc)
 
 ## Fig 10: Simulation Waveform Window
+![WhatsApp Image 2024-11-22 at 12 37 48_dc4f1689](https://github.com/user-attachments/assets/04db5265-728c-4c65-9a21-348458a1329f)
 
 ## Fig 11: Simulation Waveform Window
+![WhatsApp Image 2024-11-22 at 12 37 48_13895104](https://github.com/user-attachments/assets/c8ac93e8-c433-419f-a200-36147fdc0ab2)
 
-### Result
-
-The functionality of a 4bit_up-down asynchronous reset Counter was successfully verified using a test bench and simulated with the nclaunch tool.
+### Result:
+The functionality of 4bit up/down counter was successfully verified using a test bench and simulated with the nclaunch tool.
 
